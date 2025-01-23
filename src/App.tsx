@@ -6,6 +6,7 @@ import { useMediaQuerySync } from "./hooks/useMediaQuerySync";
 import { useLocalStorageSync } from "./hooks/useLocalStarageSync";
 import { useHover } from "./hooks/useHover";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { useOnline } from "./hooks/useOnline";
 
 function App() {
   const searchId = useId();
@@ -39,11 +40,14 @@ function App() {
   const isHoveredBlock = useHover(hoverBlockRef);
   // console.log("isHoveredBlock", isHoveredBlock);
 
-
   // const handleModalClose = () => {
   //   setIsModal(false);
   // };
   // useClickOutside(modalRef, handleModalClose);
+
+  const { isOnline } = useOnline();
+  // console.log("isOnline", isOnline);
+
 
   return (
     <>
@@ -59,6 +63,10 @@ function App() {
       <div>
         <p>- Screen desktop?</p>
         <p>- {isScreenDesktop ? "Yes" : "No"}</p>
+      </div>
+      <div>
+        <p>- is Online?</p>
+        <p>- {isOnline ? "Yes" : "No"}</p>
       </div>
       <div>
         <label htmlFor={storageId}>LocalStorage</label>
