@@ -23,17 +23,21 @@ export const useHover = (
     };
 
     const target = ref.current;
+    const controllerEnter = new AbortController();
+    const controllerLeave = new AbortController();
 
     if (target) {
-      target.addEventListener("pointerenter", handleEnter);
-      target.addEventListener("pointerleave", handleLeave);
+      target.addEventListener("pointerenter", handleEnter, { signal: controllerEnter.signal });
+      target.addEventListener("pointerleave", handleLeave, { signal: controllerLeave.signal });
     }
 
     return () => {
-      if (target) {
-        target.removeEventListener("pointerenter", handleEnter);
-        target.removeEventListener("pointerleave", handleLeave);
-      }
+      // if (target) {
+      //   target.removeEventListener("pointerenter", handleEnter);
+      //   target.removeEventListener("pointerleave", handleLeave);
+      // }
+      controllerEnter.abort();
+      controllerLeave.abort();
     };
   }, [ref, onEnter, onLeave]);
 

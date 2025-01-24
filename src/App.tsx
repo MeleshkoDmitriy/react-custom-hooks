@@ -1,5 +1,6 @@
-import { useId, useRef, useState } from "react";
 import "./App.css";
+
+import { useId, useRef, useState } from "react";
 import { useFetch } from "./hooks/useFetch";
 import { useDebounced } from "./hooks/useDebounced";
 import { useMediaQuerySync } from "./hooks/useMediaQuerySync";
@@ -47,7 +48,6 @@ function App() {
 
   const { isOnline } = useOnline();
   // console.log("isOnline", isOnline);
-
 
   return (
     <>

@@ -5,9 +5,12 @@ export const useMediaQuerySync = (query: string) => {
 
   const subscribe = (callback) => {
     const mediaQueryList = window.matchMedia(query);
-    mediaQueryList.addEventListener("change", callback);
+    const controller = new AbortController();
 
-    return () => mediaQueryList.removeEventListener("change", callback);
+    mediaQueryList.addEventListener("change", callback, { signal: controller.signal });
+
+    // return () => mediaQueryList.removeEventListener("change", callback);
+    return () => controller.abort();
   };
 
   return useSyncExternalStore(subscribe, getSnapshot);

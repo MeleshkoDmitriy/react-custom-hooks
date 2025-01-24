@@ -4,12 +4,15 @@ export const useOnline = (): { isOnline: boolean } => {
   const getSnapshot = () => window.navigator.onLine;
 
   const subscribe = (callback) => {
-    window.addEventListener("online", callback);
-    window.addEventListener("offline", callback);
+    const controller = new AbortController();
+
+    window.addEventListener("online", callback, { signal: controller.signal});
+    window.addEventListener("offline", callback, { signal: controller.signal});
 
     return () => {
-      window.removeEventListener("online", callback);
-      window.removeEventListener("offline", callback);
+      // window.removeEventListener("online", callback);
+      // window.removeEventListener("offline", callback);
+      controller.abort();
     };
   };
 

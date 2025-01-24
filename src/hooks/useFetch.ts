@@ -29,13 +29,21 @@ export const useFetch = <T>(
       } else {
         try {
           abortController.current = new AbortController();
-          const { signal } = abortController.current;
+          const controller = abortController.current;
 
           setLoading(true);
           setIsError(false);
           setErrorMessage(null);
 
-          const response = await fetch(link, { ...options, signal });
+          const response = await fetch(link, {
+            ...options,
+            signal: controller.signal, // для отмены при размантировании
+          });
+          // const response = await fetch(link, {
+          //   ...options,
+          //   signal: AbortSignal.timeout(3000), // отмена запроса после, если дольше 3ех секунд
+          // });
+
           if (!response.ok) {
             throw new Error(
               `Ошибка: ${response.status} ${response.statusText}`

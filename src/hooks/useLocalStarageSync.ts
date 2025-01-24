@@ -7,16 +7,18 @@ export const useLocalStorageSync = (key: string, initialValue: string) => {
   };
 
   const subscribe = (callback) => {
+    const controller = new AbortController();
     const handleStorageChange = (event) => {
       if (event.key === key) {
         callback();
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("storage", handleStorageChange, { signal: controller.signal });
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
+      // window.removeEventListener("storage", handleStorageChange);
+      controller.abort();
     };
   };
 
